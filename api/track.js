@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
         // Supabaseの 'locations' テーブルにデータを挿入
         const { data, error } = await supabase
-            .from('locations') // 作成したテーブル名を指定
+            .from('location') // 作成したテーブル名を指定
             .insert([{
                 latitude: lat,
                 longitude: lon
