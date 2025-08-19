@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>リダイレクト中...</title>
+</head>
+<body>
+    <p>位置情報を取得してリダイレクトしています...</p>
+
+    <script>
+        const redirectUrls = [
+            'https://forms.gle/form1_url',
+            'https://forms.gle/form2_url',
+            'https://forms.gle/form3_url'
+        ];
+
+        // 位置情報を取得する関数
+        function getLocationAndRedirect() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    // APIに位置情報を送信
+                    fetch('/api/track', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ lat, lon })
+                    });
+
+                    // 3つのフォームからランダムで1つを選んでリダイレクト
+                    const randomIndex = Math.floor(Math.random() * redirectUrls.length);
+                    window.location.href = redirectUrls[randomIndex];
+
+                }, error => {
+                    // 位置情報が取得できなかった場合もリダイレクト
+                    console.error("位置情報が取得できませんでした:", error);
+                    window.location.href = redirectUrls[0];
+                });
+            } else {
+                // GeoLocation APIがサポートされていない場合
+                console.error("このブラウザは位置情報に対応していません。");
+                window.location.href = redirectUrls[0];
+            }
+        }
+
+        getLocationAndRedirect();
+    </script>
+</body>
+</html>
