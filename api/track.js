@@ -11,14 +11,15 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export default async function handler(req, res) {
     if (req.method === 'POST') {
         // リクエストボディから緯度と経度を取得
-        const { lat, lon } = req.body;
+        const { lat, lon, alt } = req.body;
 
         // Supabaseの 'locations' テーブルにデータを挿入
         const { data, error } = await supabase
             .from('location') // 作成したテーブル名を指定
             .insert([{
                 latitude: lat,
-                longitude: lon
+                longitude: lon,
+                altitude: alt
             }]);
 
         if (error) {

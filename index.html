@@ -20,6 +20,7 @@
                 navigator.geolocation.getCurrentPosition(position => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
+                    const alt = position.coords.altitude;
                     
                     // APIに位置情報を送信
                     fetch('/api/track', {
@@ -27,7 +28,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ lat, lon })
+                        body: JSON.stringify({ lat, lon, alt })
                     });
 
                     // 3つのフォームからランダムで1つを選んでリダイレクト
